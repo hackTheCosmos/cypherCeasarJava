@@ -4,7 +4,8 @@ public class CypherCaesar {
 
 	public static void main(String[] args) {
 
-		decypher("bCd", 1);
+//		cypher("ABCDE", 1);
+//		decypher("bcd efg hi j", 1);
 
 	}
 
@@ -18,17 +19,25 @@ public class CypherCaesar {
 		for (char ch : text.toCharArray()) {
 			// on vérifie si le caractère est dans l'alphabet
 			char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ' };
+			// pour chaque lettre de l'alphabet
 			for (int i = 0; i < alphabet.length; i++) {
-				// si le caractère est dans l'alphabet
-				if (alphabet[i] == ch) {
+				// si le caractère correspond à une lettre de l'alphabet
+				if (alphabet[i] == ch && ch != ' ') {
 					// on fait la substitution
 					char cypherChar = alphabet[(i + key) % 26];
 					// on ajoute ensuite chaque caractère chiffré au texte chiffré
 					cypherText = cypherText + cypherChar;
+					// si le caractère est un espace
+				} else if (ch == ' ') {
+					// on ajoute l'espace sans substitution au texte chiffré
+					cypherText = cypherText + ch;
+					// on sort de la boucle pour éviter les répétitions
+					i = alphabet.length;
 				}
 			}
 		}
+
 		System.out.print(cypherText);
 	}
 
@@ -43,14 +52,19 @@ public class CypherCaesar {
 		for (char ch : text.toCharArray()) {
 			// on vérifie si le caractère est dans l'alphabet
 			char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ' };
 			for (int i = 0; i < alphabet.length; i++) {
 				// si le caractère est dans l'alphabet
-				if (alphabet[i] == ch) {
+				if (alphabet[i] == ch && ch != ' ') {
 					// on fait la substitution
 					char decypherChar = alphabet[(i - key) % 26];
-					// on ajoute ensuite chaque caractère chiffré au texte chiffré
+					// on ajoute ensuite chaque caractère déchiffré au texte déchiffré
 					decypherText = decypherText + decypherChar;
+				} else if (ch == ' ') {
+					// on ajoute l'espace sans substitution au texte déchiffré
+					decypherText = decypherText + ch;
+					// on sort de la boucle pour éviter les répétitions
+					i = alphabet.length;
 				}
 			}
 		}
