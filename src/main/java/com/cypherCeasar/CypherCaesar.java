@@ -4,70 +4,78 @@ public class CypherCaesar {
 
 	public static void main(String[] args) {
 
-//		cypher("ABCDE", 1);
-//		decypher("bcd efg hi j", 1);
+//		encrypt("salut ! Crypt moi, stp ?", 4);
+//		decrypt("Irgvctx qi", 4);
+		int temp = 199 ;
+		System.out.print((char)temp);
 
 	}
 
-	static void cypher(String text, int key) {
+	
+	/**
+	 * encrypt a message
+	 * @param message
+	 * @param key
+	 */
+	static void encrypt(String message, int key) {
 		// on créer la variable qui va contenir le texte chiffré
-		String cypherText = "";
-		// on met le texte en minuscule
-		text = text.toLowerCase();
+		String encryptMessage = "";
 
-		// on parcours le texte caractère par caractère
-		for (char ch : text.toCharArray()) {
-			// on vérifie si le caractère est dans l'alphabet
-			char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ' };
-			// pour chaque lettre de l'alphabet
-			for (int i = 0; i < alphabet.length; i++) {
-				// si le caractère correspond à une lettre de l'alphabet
-				if (alphabet[i] == ch && ch != ' ') {
-					// on fait la substitution
-					char cypherChar = alphabet[(i + key) % 26];
-					// on ajoute ensuite chaque caractère chiffré au texte chiffré
-					cypherText = cypherText + cypherChar;
-					// si le caractère est un espace
-				} else if (ch == ' ') {
-					// on ajoute l'espace sans substitution au texte chiffré
-					cypherText = cypherText + ch;
-					// on sort de la boucle pour éviter les répétitions
-					i = alphabet.length;
-				}
+		
+		//on parcours le texte à chiffrer
+		for (int i = 0; i < message.length(); i++) {
+			// on gère le cas où le caractère est un espace
+			if ((int)message.charAt(i) == 32) {
+				encryptMessage += (char)32;
+			//on gère le cas où l'on va trop loin dans la table ASCII (le max que l'on veut est à 122 : "z" minuscule)
+			} else if ( ((int)message.charAt(i) + key) > 122) {
+				int temp = ((int)message.charAt(i) + key) - 122;
+				encryptMessage += (char)(temp + 96);// les lettres minuscules commences à 97 dans la table ASCII
+				
+			//on gère le cas ou on n'est entre les lettres majuscules et les lettres minuscules dans la table ASCII (soit pour 90 < c < 97)
+			} else if (((int)message.charAt(i) + key) > 90 && (int)message.charAt(i) < 97) {
+				int temp = (((int)message.charAt(i) + key) - 90);
+				encryptMessage += (char)(temp + 64); //les lettres majuscules commences à 65 dans la table ASCII
+			} else if(((int)message.charAt(i) + key) > 32){
+				encryptMessage += (char)((int)message.charAt(i) + key);
 			}
 		}
+		
 
-		System.out.print(cypherText);
+		System.out.println(encryptMessage);
 	}
-
-	static void decypher(String text, int key) {
-
+	
+	/**
+	 * decrypt a message
+	 * @param message
+	 * @param key
+	 */
+	static void decrypt(String message, int key) {
 		// on créer la variable qui va contenir le texte déchiffré
-		String decypherText = "";
-		// on met le texte en minuscule
-		text = text.toLowerCase();
+		String decryptMessage = "";
 
-		// on parcours le texte caractère par caractère
-		for (char ch : text.toCharArray()) {
-			// on vérifie si le caractère est dans l'alphabet
-			char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ' };
-			for (int i = 0; i < alphabet.length; i++) {
-				// si le caractère est dans l'alphabet
-				if (alphabet[i] == ch && ch != ' ') {
-					// on fait la substitution
-					char decypherChar = alphabet[(i - key) % 26];
-					// on ajoute ensuite chaque caractère déchiffré au texte déchiffré
-					decypherText = decypherText + decypherChar;
-				} else if (ch == ' ') {
-					// on ajoute l'espace sans substitution au texte déchiffré
-					decypherText = decypherText + ch;
-					// on sort de la boucle pour éviter les répétitions
-					i = alphabet.length;
-				}
+		
+		//on parcours le texte à déchiffrer
+		for (int i = 0; i < message.length(); i++) {
+			// on gère le cas où le caractère est un espace
+			if ((int)message.charAt(i) == 32) {
+				decryptMessage += (char)32;
+			//on gère le cas où l'on est entre l'espace et les majuscules dans la table ASCII (soit 32 < c < 65)
+			} else if ( ((int)message.charAt(i) - key) > 32 && ((int)message.charAt(i) < 65)) {
+				int temp = ((int)message.charAt(i) - key) - 122;
+				decryptMessage += (char)(temp + 96);
+				// les lettres minuscules commences à 97 dans la table ASCII
+		
+			//on gère le cas ou on n'est entre les lettres majuscules et les lettres minuscules dans la table ASCII (soit pour 90 < c < 97)
+			} else if (((int)message.charAt(i) - key) > 90 && (int)message.charAt(i) < 97) {
+				int temp = (((int)message.charAt(i) - key) - 90);
+				decryptMessage += (char)(temp + 64); //les lettres majuscules commences à 65 dans la table ASCII
+			} else {
+				decryptMessage += (char)((int)message.charAt(i) - key);
 			}
 		}
-		System.out.print(decypherText);
+		
+
+		System.out.println(decryptMessage);
 	}
 }
