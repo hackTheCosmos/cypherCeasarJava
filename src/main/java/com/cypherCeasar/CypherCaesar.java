@@ -4,18 +4,13 @@ public class CypherCaesar {
 
 	public static void main(String[] args) {
 
-		encrypt("Hey ! Comment va ? ça fait un bail ! 2022 non ?", 25);
-		decrypt("Gdx : Bnlldms uz 8 z ezhs tm azhk : +)++ mnm 8", 25);
-
+		encrypt("£Hey ! Comment va ? ça fait un bail ! 2022 non ?", 23);
+		decrypt("ºEbv 8 Zljjbkq sx 6 þx cxfq rk yxfi 8 )')) klk 6", 23);
 
 	}
-	
-//	static void latinToAscii(char[] latinsCharsArray, char latinChar, char asciiChar) {
-//		System.out.println(latinChar.replace(latinChar, asciiChar));
-//	}
 
 	/**
-	 * encrypt message (works for ASCII and Latin encoding)
+	 * encrypt message (works for utf-8 encoding with basic latins chars)
 	 * @param message
 	 * @param key
 	 */
@@ -70,10 +65,11 @@ public class CypherCaesar {
 					encryptMessage += (char)newAsciiCode;
 				}
 			//for latins chars
-			} else if((int)message.charAt(i) >= 128 && (int)message.charAt(i) <= 255){
+			} else if((int)message.charAt(i) >= 161 && (int)message.charAt(i) <= 255){
 				int newAsciiCode = (int)message.charAt(i) + key;
 				if(newAsciiCode > 255) {
-					encryptMessage += (char)(newAsciiCode - 128);
+					encryptMessage += (char)(newAsciiCode - 95);
+					
 				} else {
 					encryptMessage += (char)newAsciiCode;
 				}
@@ -88,7 +84,7 @@ public class CypherCaesar {
 	}
 	
 	/**
-	 * decrypt message (works for ASCII and Latin encoding)
+	 * decrypt message (works for utf-8 encoding with basic latins chars)
 	 * @param message
 	 * @param key
 	 */
@@ -132,12 +128,20 @@ public class CypherCaesar {
 					decryptMessage += (char)(newAsciiCode + 26);
 				} else {
 					decryptMessage += (char)newAsciiCode;
+				}	
+			//for special chars (after "z")
+			}else if((int)message.charAt(i) >= 123 && (int)message.charAt(i) <= 126) {
+				int newAsciiCode = (int)message.charAt(i) - key;
+				if(newAsciiCode < 123) {
+					decryptMessage += (char)(newAsciiCode + 4);
+				} else {
+					decryptMessage += (char)newAsciiCode;
 				}
 			//for latins chars
-			} else if((int)message.charAt(i) >= 128 && (int)message.charAt(i) <= 255){
+			} else if((int)message.charAt(i) >= 161 && (int)message.charAt(i) <= 255){
 				int newAsciiCode = (int)message.charAt(i) - key;
-				if(newAsciiCode < 128) {
-					decryptMessage += (char)(newAsciiCode + 128);
+				if(newAsciiCode < 161) {
+					decryptMessage += (char)(newAsciiCode + 95);
 				} else {
 					decryptMessage += (char)newAsciiCode;
 				}
